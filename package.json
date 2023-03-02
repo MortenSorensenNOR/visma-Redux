@@ -9,10 +9,21 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~48.0.4",
+    "@expo/vector-icons": "^13.0.0",
+    "@react-native-community/blur": "^4.3.0",
+    "@react-native-masked-view/masked-view": "0.2.8",
+    "@react-navigation/native": "^6.1.6",
+    "@react-navigation/stack": "^6.3.16",
+    "expo": "^48.0.0",
+    "expo-blur": "~12.2.2",
+    "expo-linear-gradient": "~12.1.1",
     "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
-    "react-native": "0.71.3"
+    "react-native": "0.71.3",
+    "react-native-gesture-handler": "~2.9.0",
+    "react-native-reanimated": "~2.14.4",
+    "react-native-webview": "11.26.0",
+    "expo-updates": "~0.16.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
