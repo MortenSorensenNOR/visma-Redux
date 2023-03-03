@@ -11,8 +11,7 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const VismaWeb = (props) => {
-	const LearnerID = "8955361";
-	const thisDate = new Date();
+	const LearnerID = "";
 	const [urlState, setUrlState] = React.useState("");
 	const [urlHttps, setUrlHttps] = React.useState(false);
 	const [dataLoaded, setDataLoaded] = React.useState(false);
@@ -64,6 +63,7 @@ const VismaWeb = (props) => {
 	`;
 
 	const onMessage = (message) => {
+		alert(message);
 		setDataLoaded(true);
 		processTimetableData(JSON.parse(message));
 	}
@@ -83,7 +83,7 @@ const VismaWeb = (props) => {
 			<StatusBar style="light" />
 			{
 				dataLoaded ? (
-					<View style={{ width: windowWidth, height: windowHeight, zIndex: 2, postion: "absolute", top: 0, left: 0, backgroundColor: "#1C1B1D" }}>
+					<View style={{ width: windowWidth, height: windowHeight, zIndex: 3, postion: "absolute", top: 0, left: 0, backgroundColor: "#1C1B1D" }}>
 						<LoadingIndicatorView />
 					</View>
 				) : <></>
@@ -96,23 +96,23 @@ const VismaWeb = (props) => {
 				javaScriptEnabled={true}
 				injectedJavaScript={retrieveTimeTableData}
 				onMessage={event => onMessage(event.nativeEvent.data)}
-				style={{ marginTop: 90 }}
+				contentInset={{top: 90}}
 				ref={webViewRef}
 			/>
 			<View style={styles.TopBarContainer}>
 				<BlurView tint='dark' intensity={100} style={styles.TopBarBluredView} />
 				<View style={styles.TopBarContentContainer}>
 					<TouchableOpacity style={{  }} onPress={() => props.navigation.navigate("Home")}>
-						<Text style={{ fontSize: 17, fontWeight: "500", color: "#329dfa"}}>Done</Text>
+						<Text style={{ fontSize: 17, fontWeight: "500", color: "#00A3FF"}}>Done</Text>
 					</TouchableOpacity>
 					<View style={styles.TopBarURLContainer}>
 						{
-							urlHttps ? <FontAwesome name="lock" size={17} color="white" /> : <></>
+							urlHttps ? <FontAwesome name="lock" size={17} color="white" style={{ position: "absolute", left: -17 }} /> : <></>
 						}
 						<Text numberOfLines={1} style={styles.TopBarURL}>{urlState}</Text>
 					</View>
 					<TouchableOpacity onPress={() => webViewRef.current?.reload()}>
-						<Ionicons name="reload" size={20} color="#329dfa" />
+						<Ionicons name="reload" size={20} color="#00A3FF" />
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
 		left: 0,
 	},
 	TopBarContainer: {
+		zIndex: 2,
 		top: 0, 
 		position: "absolute", 
 		width: windowWidth
@@ -162,9 +163,9 @@ const styles = StyleSheet.create({
 		fontSize: 17, 
 		fontWeight: "600", 
 		flexShrink: 1, 
-		marginLeft: 8 
 	},
 	BottomBarContainer: {
+		zIndex: 2,
 		bottom: 0, 
 		position: "absolute", 
 		width: windowWidth
