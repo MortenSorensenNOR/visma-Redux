@@ -31,7 +31,6 @@ const DateSelector = (props) => {
 
 const styles = StyleSheet.create({
 	Container: {
-		height: 60,
 		width: "100%",
 		flexDirection: "row",
 		justifyContent: "space-evenly"
@@ -42,11 +41,12 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
+		paddingBottom: 18
 	},
 	Date: {
-		width: 45,
-		height: 45,
-		borderRadius: 8,
+		width: 44,
+		height: 44,
+		borderRadius: 10,
 		alignItems: "center",
 		justifyContent: "center",
 		shadowColor: "#1C1B1D",
@@ -56,17 +56,15 @@ const styles = StyleSheet.create({
 		overflow: "hidden"
 	},
 	ActiveDateMarker: { 
-		width: 45, 
-        height: 45, 
+		width: 44, 
+        height: 44, 
         position: "absolute", 
         backgroundColor: "#00A3FF",
-        borderRadius: 8
     },
 	DateBlurView: {
 		position: "absolute", 
-		height: 45, 
-		width: 45, 
-		borderRadius: 20
+		height: 44, 
+		width: 44, 
 	},
 	DateText: {
 		color: "white", 
@@ -76,17 +74,16 @@ const styles = StyleSheet.create({
 	},
 	WeekContainer: {
 		width: 75,
-		height: 45,
+		height: 44,
 		justifyContent: "center",
 		alignSelf: "center",
-		borderRadius: 8,
+		borderRadius: 10,
 		overflow: "hidden"
 	},
 	WeekBlurView: {
 		position: "absolute", 
-		height: 45, 
+		height: 44, 
 		width: 75, 
-		borderRadius: 20
 	},
 	WeekText: {
 		color: "white", 

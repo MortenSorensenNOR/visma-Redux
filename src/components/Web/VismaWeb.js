@@ -6,15 +6,17 @@ import { WebView } from 'react-native-webview';
 import { BlurView } from 'expo-blur';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LearnerID } from '../../../config';
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const VismaWeb = (props) => {
-	const LearnerID = "";
 	const [urlState, setUrlState] = React.useState("");
 	const [urlHttps, setUrlHttps] = React.useState(false);
 	const [dataLoaded, setDataLoaded] = React.useState(false);
+	const [numberOfPrev, setNumberOfPrev] = React.useState(0);
+	const [numberOfNext, setNumberOfNext] = React.useState(0);
 	const webViewRef = React.createRef(null);
 	const LoadingIndicatorView = () => {
 		return (
@@ -48,11 +50,14 @@ const VismaWeb = (props) => {
 			if (window.location.href == "https://amalieskram-vgs.inschool.visma.no/#/app/dashboard")
 			{
 				const date = new Date();
+				const beginOfYear = new Date(date.getFullYear(), 0, 1);
 				const lastDate = new Date("06/20/2023");
 				while (date.getTime() < lastDate.getTime()) {
+					var dayNr = Math.ceil((date - beginOfYear) / (24 * 60 * 60 * 1000));
+					let week = Math.ceil((dayNr + beginOfYear.getDay()) / 7);
 					try {
 					  	fetch("https://amalieskram-vgs.inschool.visma.no/control/timetablev2/learner/${LearnerID}/fetch/ALL/0/current?forWeek=" + [("0" + date.getDate()).slice(-2), ("0" + (date.getMonth() + 1)).slice(-2), date.getFullYear()].join('/'))
-					  	.then(response => response.json()).then(data => ReactNativeWebView.postMessage(JSON.stringify({ "status": "success", data })));
+					  	.then(response => response.json()).then(data => ReactNativeWebView.postMessage(JSON.stringify({ "status": "success", week, data })));
 					} catch {
 					  	ReactNativeWebView.postMessage(JSON.stringify({ "status": "error" }))
 					}
@@ -63,15 +68,13 @@ const VismaWeb = (props) => {
 	`;
 
 	const onMessage = (message) => {
-		alert(message);
 		setDataLoaded(true);
 		processTimetableData(JSON.parse(message));
 	}
 
 	const processTimetableData = async (data) => {
-		console.log(data["data"])
 		try {
-			await AsyncStorage.setItem('@timetable/9', JSON.stringify(data["data"]));
+			await AsyncStorage.setItem(`@timetable/${data["week"]}`, JSON.stringify(data["data"]));
 		} catch (e) {
 			console.log(e);
 		}
@@ -118,6 +121,20 @@ const VismaWeb = (props) => {
 			</View>
 			<View style={styles.BottomBarContainer}>
 				<BlurView tint='dark' intensity={100} style={styles.BottomBarBluredView} />
+				<View style={styles.BottomBarContentContainer}>
+					<TouchableOpacity onPress={() => webViewRef.current?.reload()}>
+						<Ionicons name="reload" size={20} color="#00A3FF" />
+					</TouchableOpacity>
+					<TouchableOpacity onPress={() => webViewRef.current?.reload()}>
+						<Ionicons name="reload" size={20} color="#00A3FF" />
+					</TouchableOpacity>
+					<TouchableOpacity onPress={() => webViewRef.current?.reload()}>
+						<Ionicons name="reload" size={20} color="#00A3FF" />
+					</TouchableOpacity>
+					<TouchableOpacity onPress={() => webViewRef.current?.reload()}>
+						<Ionicons name="reload" size={20} color="#00A3FF" />
+					</TouchableOpacity>
+				</View>
 			</View>
 		</View>
 	);
@@ -137,17 +154,18 @@ const styles = StyleSheet.create({
 		zIndex: 2,
 		top: 0, 
 		position: "absolute", 
-		width: windowWidth
+		width: windowWidth,
 	},
 	TopBarBluredView: { 
 		position: "absolute", 
 		width: windowWidth, 
-		height: 90, 
+		height: "100%",
 		top: 0 
 	},
 	TopBarContentContainer: { 
 		marginTop: 54, 
-		marginHorizontal: 16, 
+		marginHorizontal: 16,
+		paddingBottom: 16,
 		justifyContent: "space-between", 
 		alignItems: "baseline", 
 		flexDirection: "row" 
@@ -173,8 +191,16 @@ const styles = StyleSheet.create({
 	BottomBarBluredView: {
 		position: "absolute", 
 		width: windowWidth, 
-		height: 60, 
+		height: "100%",
 		bottom: 0
+	},
+	BottomBarContentContainer: {
+		marginTop: 16, 
+		marginBottom: 46, 
+		marginHorizontal: 24,
+		justifyContent: "space-between", 
+		alignItems: "baseline", 
+		flexDirection: "row" 
 	}
 });
 export default VismaWeb;

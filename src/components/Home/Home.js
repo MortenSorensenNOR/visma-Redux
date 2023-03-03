@@ -15,25 +15,28 @@ const Home = (props) => {
 	const testDates = ["1", "2", "3", "4", "5"];
 	const testWeek = "9"
 
-	const fetchTimeTableData = async () => {
+	const fetchTimeTableData = async (week) => {
 		try {
 			console.log("Fetching data...")
-			const jsonValue = await AsyncStorage.getItem('@timetable/9');
+			const jsonValue = await AsyncStorage.getItem(`@timetable/${week}`);
     		console.log(jsonValue != null ? JSON.parse(jsonValue) : null);
 		} catch (e) {
 			console.log(e)
 		}
 	}
 
-	// fetchTimeTableData();
+	fetchTimeTableData(testWeek);
 
 	return (
 		<SafeAreaView style={styles.PageContainer}>
 			{/* Content */}
+			<View style={{ width: "70%", height: 500, backgroundColor: "white", borderRadius: 20, position: "absolute", top: 50}}>
+
+			</View>
 
 			{/* Header */}
 			<View style={styles.HeaderBar}>
-				<BlurView tint='dark' intensity={100} style={{ position: "absolute", height: styles.HeaderBar.height + styles.HeaderBar.paddingTop, width: windowWidth }} />
+				<BlurView tint='dark' intensity={100} style={{ position: "absolute", height: "100%", width: windowWidth }} />
 				<View style={styles.TopBar}>
 					<TouchableOpacity>
 						<Octicons name="three-bars" size={22} color="white" />
@@ -61,18 +64,17 @@ const styles = StyleSheet.create({
 		top: 0,
 		width: "100%",
 		position: "absolute",
-		height: 110,
-		paddingTop: 44,
-		paddingHorizontal: 30
+		paddingHorizontal: 36
 	},
 	TopBar: {
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "baseline",
-		paddingBottom: 8
+		marginBottom: 12,
+		marginTop: 44,
 	},
 	title: {
-		fontSize: 40,
+		fontSize: 38,
 		fontWeight: "600",
 		textAlign: "center",
 		zIndex: 1
