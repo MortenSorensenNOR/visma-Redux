@@ -3,6 +3,7 @@ import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet } from 'react-na
 import { Dimensions } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Ionicons, Octicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import GradientText from './GradientText';
 import DateSelector from './DateSelector';
@@ -13,6 +14,18 @@ const windowHeight = Dimensions.get('window').height;
 const Home = (props) => {
 	const testDates = ["1", "2", "3", "4", "5"];
 	const testWeek = "9"
+
+	const fetchTimeTableData = async () => {
+		try {
+			console.log("Fetching data...")
+			const jsonValue = await AsyncStorage.getItem('@timetable/9');
+    		console.log(jsonValue != null ? JSON.parse(jsonValue) : null);
+		} catch (e) {
+			console.log(e)
+		}
+	}
+
+	// fetchTimeTableData();
 
 	return (
 		<SafeAreaView style={styles.PageContainer}>
