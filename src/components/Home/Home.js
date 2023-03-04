@@ -25,14 +25,11 @@ const Home = (props) => {
 		}
 	}
 
-	fetchTimeTableData(testWeek);
+	// fetchTimeTableData(rtestWeek);
 
 	return (
 		<SafeAreaView style={styles.PageContainer}>
 			{/* Content */}
-			<View style={{ width: "70%", height: 500, backgroundColor: "white", borderRadius: 20, position: "absolute", top: 50}}>
-
-			</View>
 
 			{/* Header */}
 			<View style={styles.HeaderBar}>
