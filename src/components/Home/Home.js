@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Dimensions } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -7,25 +7,42 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import GradientText from './GradientText';
 import DateSelector from './DateSelector';
+import getWeek from '../../getWeek';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const Home = (props) => {
-	const testDates = ["1", "2", "3", "4", "5"];
-	const testWeek = "9"
+	const [timetableData, setTimeTableData] = React.useState(null);
+	const week = getWeek();
 
 	const fetchTimeTableData = async (week) => {
 		try {
-			console.log("Fetching data...")
 			const jsonValue = await AsyncStorage.getItem(`@timetable/${week}`);
-    		console.log(jsonValue != null ? JSON.parse(jsonValue) : null);
+			if (jsonValue == null) {
+				trow ("ERROR: Could not find timetable-data");
+			}
+			setTimeTableData(JSON.parse(jsonValue));
 		} catch (e) {
 			console.log(e)
 		}
 	}
 
-	// fetchTimeTableData(rtestWeek);
+	useEffect(() => {
+		fetchTimeTableData(week);
+	}, [])
+
+	let weekDates = Array.from(Array(5), (x, i) => x = i + 1);
+	if (timetableData != null) {
+		let startOfWeekDate = new Date(...timetableData.startDate.split('/').map((x, i) => i == 1 ? parseInt(x) - 1 : parseInt(x)).reverse().splice());
+		const daysInWeek = timetableData.daysInWeek;
+		weekDates = Array.from(Array(daysInWeek), (x, i) => {
+			if (i != 0) {
+				startOfWeekDate.setDate(startOfWeekDate.getDate() + 1);
+			}
+			return startOfWeekDate.getDate();
+		});
+	}
 
 	return (
 		<SafeAreaView style={styles.PageContainer}>
@@ -43,7 +60,7 @@ const Home = (props) => {
 						<Ionicons name="reload" size={22} color="white" />
 					</TouchableOpacity>
 				</View>
-				<DateSelector dates={testDates} week={testWeek} />
+				<DateSelector dates={weekDates} week={week} />
 			</View>
 		</SafeAreaView>
 	);
