@@ -9,29 +9,10 @@ import GradientText from './GradientText';
 import DateSelector from './DateSelector';
 import getWeek from '../../getWeek';
 
+import { Week } from "./TimeTable";
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-
-const ViewData = (props) => {
-	if (props.data != null) {
-		return (
-			<View>
-			{
-				props.data["timetableItems"].map((element, i) => (
-					<Text key={i} style={{ color: "white", fontSize: 18 }}>{element["subject"].split(',')[0]}</Text>
-				))
-			}
-			</View>
-		)
-	}
-	return (
-		<ActivityIndicator 
-			color="#00A3FF"
-			size="large"
-			style={styles.ActivityIndicatorStyle}
-		/>
-	);
-}
 
 const Home = (props) => {
 	const [timetableData, setTimeTableData] = React.useState(null);
@@ -67,7 +48,7 @@ const Home = (props) => {
 
 	return (
 		<SafeAreaView style={styles.PageContainer}>
-			<ViewData data={timetableData} />
+			<Week data={timetableData} />
 
 			{/* Header */}
 			<View style={styles.HeaderBar}>

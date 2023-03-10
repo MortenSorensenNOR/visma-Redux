@@ -1,0 +1,1 @@
+export { Week as default } from "./Week";
