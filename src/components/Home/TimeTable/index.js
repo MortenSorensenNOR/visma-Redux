@@ -1,1 +1,1 @@
-export { Week as default } from "./Week";
+export { default as Week } from "./Week";
