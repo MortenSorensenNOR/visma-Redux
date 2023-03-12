@@ -5,10 +5,35 @@ import { Dimensions } from 'react-native';
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-const Week = (props) => {
-	const numOfDays = props.data.daysInWeek;
+const Day = (props) => {
+	return (
+		<View style={{ width: windowWidth, height: windowHeight, justifyContent: "center", alignItems: "center" }} >
+			{
+				props.data.map((element, i) => (
+					<View key={i}>
+						<Text style={{ color: "white" }}>{element.subject}</Text>
+					</View>
+				))
+			}
+		</View>
+	);
+}
 
+const Week = (props) => {
 	if (props.data != null) {
+		const numOfDays = props.data.daysInWeek;
+		const dayData = Array.from(Array(numOfDays), x => []);
+		
+		let dayDataIndex = 0;
+		let startDate = props.data.startDate;
+		for (let item of props.data.timetableItems) {
+			if (item.date != startDate) {
+				startDate = item.date;
+				dayDataIndex++;
+			}
+			dayData[dayDataIndex].push(item);
+		}
+
 		return (
 			<ScrollView
 				horizontal
@@ -18,16 +43,16 @@ const Week = (props) => {
 				decelerationRate="fast"
 			>
 				{
+					dayData.map((day, i) => (
+						<Day key={i} data={day} />					
+					))
 				}
-				<View style={{ width: windowWidth, height: windowHeight, justifyContent: "center", alignItems: "center", backgroundColor: "#6fc1f7" }} >
-					<Text style={{ color: "white" }} > View 1 </Text>
-				</View>
-				<View style={{ width: windowWidth, height: windowHeight, justifyContent: "center", alignItems: "center", backgroundColor: "#e56ff7" }} >
+				{/* <View style={{ width: windowWidth, height: windowHeight, justifyContent: "center", alignItems: "center", backgroundColor: "#e56ff7" }} >
 					<Text style={{ color: "white" }} > View 2 </Text>
 				</View>
 				<View style={{ width: windowWidth, height: windowHeight, justifyContent: "center", alignItems: "center", backgroundColor: "#88eb6a" }} >
 					<Text style={{ color: "white" }} > View 3 </Text>
-				</View>
+				</View> */}
 			</ScrollView>
 		)
 	}

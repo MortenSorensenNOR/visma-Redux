@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 	},
 	DateText: {
 		color: "white", 
-		fontSize: 20, 
+		fontSize: 18, 
 		fontWeight: "700", 
 		textAlign: "center"
 	},
